@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Story App</string>
+    <string name="signup">Daftar</string>
+    <string name="login">Masuk</string>
+    <string name="message_welcome_page">Bagikan kegiatanmu dengan estetik</string>
+    <string name="title_welcome_page">ekspresikan dirimu</string>
+    <string name="title_signup_page">Masukkan data diri kamu</string>
+    <string name="signup_success_message">Akun anda berhasil dibuat, silahkan login!</string>
+    <string name="signup_failed_message">Akun anda gagal dibuat, silahkan menyesuaikan ketentuan!</string>
+    <string name="signup_success_title">Sign Up Berhasil!</string>
+    <string name="signup_failed_title">Sign Up Gagal!</string>
+    <string name="column_isEmpty_message">Kolom tidak boleh kosong!</string>
+    <string name="password_minimum">Password minimal 8 karakter</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Masukkan data diri kamu</string>
+    <string name="title_login_page">Login</string>
+    <string name="name">Nama</string>
+    <string name="about_story">Tentang story</string>
+    <string name="upload_story">Unggah story</string>
+    <string name="upload">Unggah</string>
+    <string name="copyright">© R A N Z</string>
+    <string name="message_main_page">Y</string>
+    <string name="greeting">Halo %1$s</string>
+    <string name="logout">Keluar</string>
+    <string name="signUp_question">Belum punya akun?</string>
+    <string name="description">Deskripsi</string>
+    <string name="createdDate">dibuat pada</string>
+    <string name="camera">Ambil gambar</string>
+    <string name="media_method">Pilih metode:</string>
+    <string name="add_description">Tambah deskripsi</string>
+    <string name="login_success">Ayo unggah storymu sekarang!</string>
+    <string name="login_failed">Gagal login</string>
+    <string name="email_password_invalid">Email atau password tidak valid</string>
+    <string name="setting">Pengaturan</string>
+    <string name="gallery_choice">Pilih dari Galeri</string>
+    <string name="capture_failed">Gagal mengambil gambar</string>
+    <string name="camera_unactivated">Gagal memunculkan kamera</string>
+    <string name="camera_activated">Berhasil memunculkan kamera</string>
+
+</resources>

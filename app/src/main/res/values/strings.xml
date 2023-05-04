@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Story App</string>
+    <string name="signup">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="message_welcome_page">Share your activities aesthetically</string>
+    <string name="title_welcome_page">express yourself</string>
+    <string name="title_signup_page">Enter your data</string>
+    <string name="signup_success_message">Your account has been successfully created, please login!</string>
+    <string name="signup_failed_message">Your account failed to create, please adjust the conditions!</string>
+    <string name="signup_success_title">Sign Up Successful!</string>
+    <string name="signup_failed_title">Sign Up Failed!</string>
+    <string name="column_isEmpty_message">Column cannot be empty!</string>
+    <string name="password_minimum">Password must be at least 8 characters long</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Enter your data</string>
+    <string name="title_login_page">Login</string>
+    <string name="name">Name</string>
+    <string name="about_story">About story</string>
+    <string name="upload_story">Upload story</string>
+    <string name="upload">Upload</string>
+    <string name="copyright">© R A N Z</string>
+    <string name="message_main_page">Y</string>
+    <string name="greeting">Hello %1$s</string>
+    <string name="logout">Logout</string>
+    <string name="signUp_question">Don\'t have an account yet?</string>
+    <string name="description">Description</string>
+    <string name="createdDate">createdAt</string>
+    <string name="camera">Take picture</string>
+    <string name="media_method">Select method:</string>
+    <string name="add_description">Add a description</string>
+    <string name="login_success">Let\'s upload your story right now!</string>
+    <string name="login_failed">Login failed</string>
+    <string name="email_password_invalid">Invalid email or password</string>
+    <string name="setting">Setting</string>
+    <string name="gallery_choice">Choose from Gallery</string>
+    <string name="capture_failed">Failed to capture the image</string>
+    <string name="camera_unactivated">Failed to activate the camera</string>
+    <string name="camera_activated">Successfully activated the camera</string>
+
+
+
+</resources>
