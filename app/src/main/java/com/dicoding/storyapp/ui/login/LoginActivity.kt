@@ -72,10 +72,12 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            if (!email.isEmpty() && !password.isEmpty()) {
+            if (!email.isEmpty() && !password.isEmpty() && password.length>=8) {
                 setupViewModel(email, password)
             } else if (email.isEmpty()) binding.emailEditTextLayout.error =
                 resources.getString(R.string.column_isEmpty_message)
+            else if (password.length<8) binding.passwordEditTextLayout.error =
+                resources.getString(R.string.password_minimum)
             else binding.passwordEditTextLayout.error =
                 resources.getString(R.string.column_isEmpty_message)
         }
