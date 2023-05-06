@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.storyapp.data.lib.User.LoginResponse
-import com.dicoding.storyapp.data.remote.ApiConfig
+import com.dicoding.storyapp.data.remote.API.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

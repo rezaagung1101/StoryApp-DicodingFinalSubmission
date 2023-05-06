@@ -2,6 +2,8 @@ package com.dicoding.storyapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.storyapp.R
@@ -9,7 +11,8 @@ import com.dicoding.storyapp.data.lib.story.Story
 import com.dicoding.storyapp.databinding.CardStoryBinding
 
 class StoryAdapter(private val listStory: ArrayList<Story>) :
-    RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
+//RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
+    PagingDataAdapter<Story, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     interface OnItemClickCallback {
@@ -42,6 +45,17 @@ class StoryAdapter(private val listStory: ArrayList<Story>) :
         bind(listStory[position])
     }
 
-
     override fun getItemCount() = listStory.size
+
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Story>() {
+            override fun areItemsTheSame(oldItem: Story, newItem: Story): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: Story, newItem: Story): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+    }
 }

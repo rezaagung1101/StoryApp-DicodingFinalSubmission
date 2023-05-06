@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.storyapp.data.lib.story.StoryUpload
-import com.dicoding.storyapp.data.remote.ApiConfig
+import com.dicoding.storyapp.data.remote.API.ApiConfig
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call

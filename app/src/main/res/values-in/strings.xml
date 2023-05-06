@@ -38,5 +38,6 @@
     <string name="capture_failed">Gagal mengambil gambar</string>
     <string name="camera_unactivated">Gagal memunculkan kamera</string>
     <string name="camera_activated">Berhasil memunculkan kamera</string>
+    <string name="retry">Coba Lagi</string>
 
 </resources>

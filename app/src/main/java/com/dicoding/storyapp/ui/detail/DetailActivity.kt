@@ -8,21 +8,28 @@ import com.dicoding.storyapp.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailBinding
-    private lateinit var storyData : Story
+//    private lateinit var storyData : Story
+    private lateinit var name : String
+    private lateinit var createdAt : String
+    private lateinit var description : String
+    private lateinit var photoUrl : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        storyData = intent.getParcelableExtra<Story>("STORY") as Story
-        setupAction(storyData)
+        name = intent.getStringExtra("NAME").toString()
+        createdAt = intent.getStringExtra("CREATEDAT").toString()
+        description = intent.getStringExtra("DESCRIPTION").toString()
+        photoUrl = intent.getStringExtra("PHOTOURL").toString()
+        setupAction(name, createdAt, description, photoUrl)
     }
-    private fun setupAction(story : Story){
+    private fun setupAction(name : String, createdAt : String, description : String, photoUrl : String){
         binding.apply{
-            tvName.text = story.name
-            tvCreatedDate.text = story.createdAt
-            tvDescriptionValue.text = story.description
+            tvName.text = name
+            tvCreatedDate.text = createdAt
+            tvDescriptionValue.text = description
             Glide.with(applicationContext)
-                .load(story.photoUrl)
+                .load(photoUrl)
                 .into(ivStory)
         }
     }

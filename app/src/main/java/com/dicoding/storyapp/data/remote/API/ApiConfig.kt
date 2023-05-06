@@ -1,7 +1,8 @@
-package com.dicoding.storyapp.data.remote
+package com.dicoding.storyapp.data.remote.API
 
 import android.content.Context
 import com.dicoding.storyapp.BuildConfig
+import com.dicoding.storyapp.data.remote.AuthenticationInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

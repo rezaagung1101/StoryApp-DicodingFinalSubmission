@@ -1,7 +1,8 @@
-package com.dicoding.storyapp.data.remote
+package com.dicoding.storyapp.data.remote.API
 
 import com.dicoding.storyapp.data.lib.User.LoginResponse
 import com.dicoding.storyapp.data.lib.User.SignUpResponse
+import com.dicoding.storyapp.data.lib.story.Story
 import com.dicoding.storyapp.data.lib.story.StoryResponse
 import com.dicoding.storyapp.data.lib.story.StoryUpload
 import okhttp3.MultipartBody
@@ -28,6 +29,14 @@ interface ApiService {
     @GET("stories")
     fun getAllStories(
     ) : Call <StoryResponse>
+
+    @GET("stories")
+    suspend fun getStoryList(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): StoryResponse
+
 
     @Multipart
     @POST("stories")

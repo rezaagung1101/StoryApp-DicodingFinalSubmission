@@ -37,7 +37,7 @@
     <string name="capture_failed">Failed to capture the image</string>
     <string name="camera_unactivated">Failed to activate the camera</string>
     <string name="camera_activated">Successfully activated the camera</string>
-
+    <string name="retry">Try Again</string>
 
 
 </resources>
