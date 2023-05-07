@@ -10,12 +10,10 @@ import com.dicoding.storyapp.data.database.StoryDatabase
 import com.dicoding.storyapp.data.lib.story.Story
 import com.dicoding.storyapp.data.remote.API.ApiService
 
-
 @OptIn(ExperimentalPagingApi::class)
 class StoryRemoteMediator(
     private val database: StoryDatabase,
     private val apiService: ApiService,
-    private val token: String
 ) : RemoteMediator<Int, Story>() {
 
     private companion object {
@@ -26,12 +24,14 @@ class StoryRemoteMediator(
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
-    override suspend fun load(loadType: LoadType, state: PagingState<Int, Story>): MediatorResult {
+    override suspend fun load(
+        loadType: LoadType,
+        state: PagingState<Int, Story>,
+    ): MediatorResult {
         val page = when (loadType) {
-            LoadType.REFRESH ->{
+            LoadType.REFRESH -> {
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                 remoteKeys?.nextKey?.minus(1) ?: INITIAL_PAGE_INDEX
-                //INITIAL_PAGE_INDEX
             }
             LoadType.PREPEND -> {
                 val remoteKeys = getRemoteKeyForFirstItem(state)
@@ -46,10 +46,13 @@ class StoryRemoteMediator(
                 nextKey
             }
         }
-        return try {
+
+        try {
             val responseData =
-                apiService.getStoryList(token, page, state.config.pageSize).listStory
+                apiService.getStoryList(page, state.config.pageSize).listStory
+
             val endOfPaginationReached = responseData.isEmpty()
+
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     database.remoteKeysDao().deleteRemoteKeys()
@@ -63,9 +66,9 @@ class StoryRemoteMediator(
                 database.remoteKeysDao().insertAll(keys)
                 database.storyDao().insertStory(responseData)
             }
-            MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
+            return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: Exception) {
-            MediatorResult.Error(exception)
+            return MediatorResult.Error(exception)
         }
     }
 

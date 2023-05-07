@@ -12,6 +12,7 @@ import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.lib.story.Story
 import com.dicoding.storyapp.databinding.CardStoryBinding
 import com.dicoding.storyapp.ui.detail.DetailActivity
+import com.dicoding.storyapp.utils.Helper
 
 class StoryPagingAdapter : PagingDataAdapter<Story, StoryPagingAdapter.ViewHolder>(DIFF_CALLBACK) {
 
@@ -21,7 +22,10 @@ class StoryPagingAdapter : PagingDataAdapter<Story, StoryPagingAdapter.ViewHolde
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
+        val data = getItem(position)
+        if (data != null) {
+            holder.bind(data)
+        }
     }
 
     companion object {
@@ -38,7 +42,6 @@ class StoryPagingAdapter : PagingDataAdapter<Story, StoryPagingAdapter.ViewHolde
 
     inner class ViewHolder(private val binding: CardStoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        @SuppressLint("SetTextI18n")
         fun bind(story: Story) {
             with(binding) {
                 imgItemPhoto.setImageResource(R.drawable.avatar)
@@ -50,7 +53,7 @@ class StoryPagingAdapter : PagingDataAdapter<Story, StoryPagingAdapter.ViewHolde
                 itemView.setOnClickListener {
                     val intentToDetail = Intent(itemView.context, DetailActivity::class.java)
                     intentToDetail.putExtra("NAME", story.name)
-                    intentToDetail.putExtra("CREATEDAt", story.createdAt)
+                    intentToDetail.putExtra("CREATEDAT", Helper.getUploadStoryTime(story.createdAt))
                     intentToDetail.putExtra("DESCRIPTION", story.description)
                     intentToDetail.putExtra("PHOTOURL", story.photoUrl)
                     itemView.context.startActivity(intentToDetail)

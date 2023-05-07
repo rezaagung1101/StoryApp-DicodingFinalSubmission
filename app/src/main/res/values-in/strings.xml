@@ -39,5 +39,9 @@
     <string name="camera_unactivated">Gagal memunculkan kamera</string>
     <string name="camera_activated">Berhasil memunculkan kamera</string>
     <string name="retry">Coba Lagi</string>
+    <string name="error_loading">Gagal memuat data!</string>
+    <string name="explore">Jelajahi Peta</string>
+    <string name="maps_error">Tidak bisa mendapatkan data lokasi pada API!</string>
+    <string name="click_instruction">Tekan untuk detail lainnya!</string>
 
 </resources>

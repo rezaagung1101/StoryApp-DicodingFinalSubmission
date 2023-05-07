@@ -38,6 +38,10 @@
     <string name="camera_unactivated">Failed to activate the camera</string>
     <string name="camera_activated">Successfully activated the camera</string>
     <string name="retry">Try Again</string>
+    <string name="error_loading">Failed to load data!</string>
+    <string name="explore">Explore Maps</string>
+    <string name="maps_error">Can\'t Fetch API Data Location</string>
+    <string name="click_instruction">Click for more details!</string>
 
 
 </resources>

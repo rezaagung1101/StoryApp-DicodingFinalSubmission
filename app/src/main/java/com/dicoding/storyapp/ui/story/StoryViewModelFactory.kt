@@ -7,7 +7,7 @@ import com.dicoding.storyapp.data.database.StoryDatabase
 import com.dicoding.storyapp.data.remote.API.ApiService
 import com.dicoding.storyapp.data.remote.repository.StoryRepository
 
-class ViewModelStoryFactory(val context: Context, private val apiService: ApiService, val token:String) :
+class StoryViewModelFactory(val context: Context, private val apiService: ApiService) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(StoryPagerViewModel::class.java)) {
@@ -15,7 +15,7 @@ class ViewModelStoryFactory(val context: Context, private val apiService: ApiSer
             val database = StoryDatabase.getDatabase(context)
             return StoryPagerViewModel(StoryRepository(
                     database,
-                    apiService, token
+                    apiService
                 )
             ) as T
         }
