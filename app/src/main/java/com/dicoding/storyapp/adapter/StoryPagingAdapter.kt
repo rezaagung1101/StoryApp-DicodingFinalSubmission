@@ -1,7 +1,7 @@
 package com.dicoding.storyapp.adapter
 
-import android.annotation.SuppressLint
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -29,7 +29,7 @@ class StoryPagingAdapter : PagingDataAdapter<Story, StoryPagingAdapter.ViewHolde
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Story>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Story>() {
             override fun areItemsTheSame(oldItem: Story, newItem: Story): Boolean {
                 return oldItem == newItem
             }
@@ -56,11 +56,18 @@ class StoryPagingAdapter : PagingDataAdapter<Story, StoryPagingAdapter.ViewHolde
                     intentToDetail.putExtra("CREATEDAT", Helper.getUploadStoryTime(story.createdAt))
                     intentToDetail.putExtra("DESCRIPTION", story.description)
                     intentToDetail.putExtra("PHOTOURL", story.photoUrl)
-                    itemView.context.startActivity(intentToDetail)
+                    try {
+                        intentToDetail.putExtra("LATITUDE", story.lat)
+                        intentToDetail.putExtra("LONGITUDE", story.lon)
+                    } catch (e: Exception) {
+                        Log.e("DetailActivity", e.toString())
                     }
 
+                    itemView.context.startActivity(intentToDetail)
                 }
+
             }
         }
+    }
 
 }

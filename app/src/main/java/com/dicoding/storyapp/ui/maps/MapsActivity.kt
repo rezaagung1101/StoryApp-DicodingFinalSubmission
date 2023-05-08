@@ -7,18 +7,13 @@ import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.MutableLiveData
-import com.bumptech.glide.Glide
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.lib.story.Story
 import com.dicoding.storyapp.databinding.ActivityMapsBinding
-import com.dicoding.storyapp.databinding.CardStoryBinding
 import com.dicoding.storyapp.databinding.CustomCardViewStoryBinding
 import com.dicoding.storyapp.ui.detail.DetailActivity
 import com.dicoding.storyapp.utils.Helper
@@ -31,7 +26,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import java.lang.StringBuilder
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter {
     private lateinit var mMap: GoogleMap
@@ -95,6 +89,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         intentToDetail.putExtra("CREATEDAT", Helper.getUploadStoryTime(story.createdAt))
         intentToDetail.putExtra("DESCRIPTION", story.description)
         intentToDetail.putExtra("PHOTOURL", story.photoUrl)
+        intentToDetail.putExtra("LATITUDE", story.lat)
+        intentToDetail.putExtra("LONGITUDE", story.lon)
         intentToDetail.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intentToDetail)
     }
