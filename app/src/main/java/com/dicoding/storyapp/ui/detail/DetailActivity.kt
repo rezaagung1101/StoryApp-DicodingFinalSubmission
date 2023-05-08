@@ -8,7 +8,6 @@ import com.dicoding.storyapp.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailBinding
-//    private lateinit var storyData : Story
     private lateinit var name : String
     private lateinit var createdAt : String
     private lateinit var description : String

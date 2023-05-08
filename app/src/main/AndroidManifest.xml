@@ -33,9 +33,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StoryApp"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.maps.PickLocationActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.story.StoryActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDsPo4ZdkHFVoPMZ4OLwaXtEIT15riK5V0" />
+
         <activity
             android:name=".ui.maps.MapsActivity"
             android:exported="false"
@@ -44,8 +54,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
-
         <activity
             android:name=".ui.story.CameraActivity"
             android:exported="false">

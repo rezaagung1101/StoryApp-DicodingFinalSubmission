@@ -7,6 +7,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Environment
 import android.os.StrictMode
@@ -113,6 +115,7 @@ object Helper {
         val date: Date = parseUTCDate(timestamp)
         return getSimpleDate(date)
     }
+
     fun bitmapFromURL(context: Context, urlString: String): Bitmap {
         return try {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
@@ -126,6 +129,20 @@ object Helper {
         } catch (e: IOException) {
             BitmapFactory.decodeResource(context.resources, R.drawable.ic_launcher_background)
         }
+    }
+
+    fun parseAddress(context: Context, latitude: Double, longitude: Double): String {
+        val geocoder = Geocoder(context, Locale.getDefault())
+        val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+        val address: String = if (addresses?.isNotEmpty() == true) {
+            val fetchedAddress: Address = addresses[0]
+            // Extract the address details you need, e.g.
+            //fetchedAddress.getAddressLine(0)
+            "${fetchedAddress.subLocality}, ${fetchedAddress.locality}"
+        } else {
+            "Address not found"
+        }
+        return address
     }
 
 }

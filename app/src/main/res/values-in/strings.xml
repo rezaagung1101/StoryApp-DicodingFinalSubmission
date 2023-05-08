@@ -38,10 +38,19 @@
     <string name="capture_failed">Gagal mengambil gambar</string>
     <string name="camera_unactivated">Gagal memunculkan kamera</string>
     <string name="camera_activated">Berhasil memunculkan kamera</string>
-    <string name="retry">Coba Lagi</string>
+    <string name="retry">Ulangi</string>
     <string name="error_loading">Gagal memuat data!</string>
     <string name="explore">Jelajahi Peta</string>
     <string name="maps_error">Tidak bisa mendapatkan data lokasi pada API!</string>
     <string name="click_instruction">Tekan untuk detail lainnya!</string>
-
+    <string name="add_location">Tambahkan lokasi</string>
+    <string name="optional">Opsional</string>
+    <string name="upload_success">Berhasil mengunggah</string>
+    <string name="upload_success_msg">Kamu telah mengunggah fotomu, yuk lihat!</string>
+    <string name="upload_failure">Gagal mengunggah</string>
+    <string name="upload_failure_msg">Fotomu gagal diunggah, coba lagi!</string>
+    <string name="next">lanjut</string>
+    <string name="current_location">Lokasimu saat ini</string>
+    <string name="address">Alamatmu</string>
+    <string name="click_address_instruction">Klik untuk menggunakan lokasi</string>
 </resources>
