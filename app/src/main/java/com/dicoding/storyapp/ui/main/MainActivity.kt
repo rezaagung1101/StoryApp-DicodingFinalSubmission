@@ -5,23 +5,24 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.storyapp.R
-import com.dicoding.storyapp.adapter.StoryAdapter
-import com.dicoding.storyapp.data.lib.story.Story
+import com.dicoding.storyapp.adapter.LoadingStateAdapter
+import com.dicoding.storyapp.adapter.StoryPagingAdapter
+import com.dicoding.storyapp.data.remote.API.ApiConfig
 import com.dicoding.storyapp.databinding.ActivityMainBinding
-import com.dicoding.storyapp.ui.detail.DetailActivity
 import com.dicoding.storyapp.ui.login.LoginActivity
+import com.dicoding.storyapp.ui.maps.MapsActivity
 import com.dicoding.storyapp.ui.story.StoryActivity
-import com.dicoding.storyapp.ui.welcome.WelcomeActivity
+import com.dicoding.storyapp.ui.story.StoryPagerViewModel
+import com.dicoding.storyapp.ui.story.StoryViewModelFactory
 import com.dicoding.storyapp.utils.preferences.UserPreference
+import java.util.*
+import kotlin.concurrent.schedule
 
 class MainActivity : AppCompatActivity() {
-    private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     private lateinit var userPreference: UserPreference
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,58 +31,57 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         userPreference = UserPreference(this)
         val layoutManager = LinearLayoutManager(this)
-        val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
-        binding.btnAddStory.setOnClickListener{
+        binding.btnAddStory.setOnClickListener {
             startActivity(Intent(this@MainActivity, StoryActivity::class.java))
         }
         binding.apply {
             rvStory.layoutManager = layoutManager
-            rvStory.addItemDecoration(itemDecoration)
         }
-        mainViewModel.getStoryList(this)
         setupAction()
     }
 
-    private fun setStoryData(storyData: ArrayList<Story>) {
-        val listStory = ArrayList<Story>()
-        for (data in storyData) {
-            listStory.add(data)
-        }
-        val adapter = StoryAdapter(listStory)
-        adapter.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: Story) {
-                binding.apply {
-                    val intentToDetail = Intent(this@MainActivity, DetailActivity::class.java)
-                    intentToDetail.putExtra("STORY", data)
-                    startActivity(intentToDetail)
-                }
-            }
-        })
-        adapter.notifyDataSetChanged()
-        binding.rvStory.adapter = adapter
-    }
-
     private fun setupAction() {
-        mainViewModel.apply {
-            isLoading.observe(this@MainActivity, {
-                showLoading(it)
-            })
-
-            listStory.observe(this@MainActivity, { listStory ->
-                setStoryData(listStory)
-            })
+        val mainViewModel = getViewModel()
+        val adapter = StoryPagingAdapter()
+        binding.swipeRefresh.setOnRefreshListener {
+            binding.swipeRefresh.isRefreshing = true
+            adapter.refresh()
+            Timer().schedule(1000) {
+                binding.swipeRefresh.isRefreshing = false
+                binding.rvStory.smoothScrollToPosition(0)
+            }
         }
+        binding.rvStory.apply {
+            setHasFixedSize(true)
+            binding.rvStory.adapter =
+                adapter.withLoadStateFooter(
+                    footer = LoadingStateAdapter {
+                        adapter.retry()
+                    }
+                )
+        }
+        mainViewModel.story.observe(this, {
+            adapter.submitData(lifecycle, it)
+        })
 
     }
 
-    private fun showLoading(state: Boolean) {
-        binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE
+    fun getViewModel(): StoryPagerViewModel {
+        val viewModel: StoryPagerViewModel by viewModels {
+            StoryViewModelFactory(
+                this,
+                ApiConfig.getApiService(this)
+            )
+        }
+        return viewModel
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.option_menu, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_logout -> {
@@ -96,6 +96,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_setting -> {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+                return true
+            }
+            R.id.explore_maps -> {
+                startActivity(Intent(this,MapsActivity::class.java))
                 return true
             }
             else -> return true

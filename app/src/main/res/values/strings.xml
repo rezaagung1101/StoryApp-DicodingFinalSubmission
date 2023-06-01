@@ -28,7 +28,7 @@
     <string name="createdDate">createdAt</string>
     <string name="camera">Take picture</string>
     <string name="media_method">Select method:</string>
-    <string name="add_description">Add a description</string>
+    <string name="add_description">Add description</string>
     <string name="login_success">Let\'s upload your story right now!</string>
     <string name="login_failed">Login failed</string>
     <string name="email_password_invalid">Invalid email or password</string>
@@ -37,7 +37,20 @@
     <string name="capture_failed">Failed to capture the image</string>
     <string name="camera_unactivated">Failed to activate the camera</string>
     <string name="camera_activated">Successfully activated the camera</string>
-
-
+    <string name="retry">Try Again</string>
+    <string name="error_loading">Failed to load data!</string>
+    <string name="explore">Explore Maps</string>
+    <string name="maps_error">Can\'t Fetch API Data Location</string>
+    <string name="click_instruction">Click for more details!</string>
+    <string name="add_location">Add Location</string>
+    <string name="optional">Optional</string>
+    <string name="upload_success">Upload Successful</string>
+    <string name="upload_success_msg">You have uploaded your photo, let\'s take a look!</string>
+    <string name="upload_failure">Upload Failed</string>
+    <string name="upload_failure_msg">Your photo failed to upload, please try again!</string>
+    <string name="next">Continue</string>
+    <string name="current_location">Your current location</string>
+    <string name="address">Your address</string>
+    <string name="click_address_instruction">Click to use the location</string>
 
 </resources>

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.storyapp.data.lib.story.StoryUpload
-import com.dicoding.storyapp.data.remote.ApiConfig
+import com.dicoding.storyapp.data.remote.API.ApiConfig
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -19,25 +19,38 @@ class StoryViewModel : ViewModel() {
     val isLogin: LiveData<Boolean> = _isLogin
     private var _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
-
-    fun postStory(context: Context, imageMultipart: MultipartBody.Part, description: RequestBody) {
+    val isUsingLocation = MutableLiveData(false)
+    val latitude = MutableLiveData(0.0)
+    val longitude = MutableLiveData(0.0)
+    fun postStory(
+        context: Context,
+        imageMultipart: MultipartBody.Part,
+        description: RequestBody,
+        usingLocation: Boolean = false,
+        latitude: RequestBody? = null,
+        longitude: RequestBody? = null,
+    ) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService(context).postStory(imageMultipart, description)
-        client.enqueue(object : Callback<StoryUpload>{
+        val client = if (usingLocation){
+            ApiConfig.getApiService(context).postStoryWithLocation(imageMultipart, description, latitude, longitude)
+        }else{
+            ApiConfig.getApiService(context).postStory(imageMultipart, description)
+        }
+        client.enqueue(object : Callback<StoryUpload> {
             override fun onResponse(call: Call<StoryUpload>, response: Response<StoryUpload>) {
                 _isLoading.value = false
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
                     val responseBody = response.body()
-                    if(responseBody!= null && !responseBody.error){
+                    if (responseBody != null && !responseBody.error) {
                         _isLogin.postValue(true)
                     }
-                }else{
+                } else {
                     _isLogin.postValue(false)
                 }
             }
 
             override fun onFailure(call: Call<StoryUpload>, t: Throwable) {
-                t.message?.let{ Log.d("Failed to Upload",it)}
+                t.message?.let { Log.d("Failed to Upload", it) }
             }
         })
 

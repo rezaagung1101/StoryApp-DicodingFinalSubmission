@@ -1,6 +1,7 @@
 package com.dicoding.storyapp.ui.story
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -15,8 +16,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.dicoding.storyapp.R
 import com.dicoding.storyapp.databinding.ActivityStoryBinding
 import com.dicoding.storyapp.ui.main.MainActivity
+import com.dicoding.storyapp.ui.maps.PickLocationActivity
 import com.dicoding.storyapp.utils.Helper
 import com.dicoding.storyapp.utils.Helper.uriToFile
 import com.dicoding.storyapp.utils.preferences.UserPreference
@@ -30,6 +33,7 @@ import java.io.File
 class StoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoryBinding
     private lateinit var userPreference: UserPreference
+    private var usingLocation : Boolean? = false
     private val storyViewModel: StoryViewModel by viewModels()
     private var getFile: File? = null
     private val launcherIntentCameraX = registerForActivityResult(
@@ -65,6 +69,23 @@ class StoryActivity : AppCompatActivity() {
             }
         }
     }
+    private val launcerIntentLocation = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            it.data?.let { result ->
+                usingLocation = result.getBooleanExtra("USINGLOCATION", false)
+                storyViewModel.apply {
+                    isUsingLocation.postValue(usingLocation)
+                    val tempLatitude = result.getDoubleExtra("LATITUDE", 0.0)
+                    val tempLongitude = result.getDoubleExtra("LONGITUDE", 0.0)
+                    latitude.postValue(tempLatitude)
+                    longitude.postValue(tempLongitude)
+                    setupAddress(tempLatitude, tempLongitude)
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +100,13 @@ class StoryActivity : AppCompatActivity() {
                 REQUEST_CODE_PERMISSIONS
             )
         }
+
+    }
+
+    private fun setupAddress(latitude: Double, longitude: Double){
+        storyViewModel.isUsingLocation.observe(this,{
+            binding.btnAddLocation.text = Helper.parseAddress(this@StoryActivity, latitude, longitude)
+        })
     }
 
     private fun setupAction() {
@@ -90,7 +118,13 @@ class StoryActivity : AppCompatActivity() {
                 startGallery()
             }
             btnUpload.setOnClickListener {
-                uploadImage()
+                if (binding.etDescription.text.toString().isEmpty()) {
+                    binding.etDescription.error =
+                        resources.getString(R.string.column_isEmpty_message)
+                } else uploadImage()
+            }
+            btnAddLocation.setOnClickListener {
+                getMyLocation()
             }
         }
     }
@@ -108,6 +142,11 @@ class StoryActivity : AppCompatActivity() {
         launcherIntentGallery.launch(chooser)
     }
 
+    private fun getMyLocation() {
+        val intent = Intent(this, PickLocationActivity::class.java)
+        launcerIntentLocation.launch(intent)
+    }
+
     private fun uploadImage() {
         if (getFile != null) {
             val file = Helper.reduceFileImage(getFile as File)
@@ -119,16 +158,31 @@ class StoryActivity : AppCompatActivity() {
                 file.name,
                 requestImageFile
             )
+            val latitude = storyViewModel.latitude.value.toString()
+            val longitude = storyViewModel.longitude.value.toString()
+            val positionLat = latitude.toRequestBody("text/plain".toMediaType())
+            val positionLon = longitude.toRequestBody("text/plain".toMediaType())
+
             storyViewModel.apply {
                 isLoading.observe(this@StoryActivity, {
                     showLoading(it)
                 })
                 if (userPreference.isLogin()) {
-                    postStory(this@StoryActivity, imageMultipart, description)
+                    if (isUsingLocation.value == true) {
+                        postStory(this@StoryActivity, imageMultipart, description, true, positionLat, positionLon)
+                    } else {
+                        postStory(this@StoryActivity, imageMultipart, description)
+                    }
                 }
                 isLogin.observe(this@StoryActivity, { state ->
-                    if (state)  showDialog("Berhasil mengunggah", "Kamu telah mengunggah fotomu, yuk lihat!", "lanjut", state)
-                    else showDialog("Gagal mengunggah", "Fotomu gagal diunggah, coba lagi!", "ulangi", false)
+                    if (state) showDialog(resources.getString(R.string.upload_success),
+                        resources.getString(R.string.upload_success_msg),
+                        resources.getString(R.string.next),
+                        state)
+                    else showDialog(resources.getString(R.string.upload_failure),
+                        resources.getString(R.string.upload_failure_msg),
+                        resources.getString(R.string.retry),
+                        false)
                 })
             }
         }
@@ -175,6 +229,7 @@ class StoryActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED

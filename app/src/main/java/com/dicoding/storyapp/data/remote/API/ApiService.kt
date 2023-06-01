@@ -1,4 +1,4 @@
-package com.dicoding.storyapp.data.remote
+package com.dicoding.storyapp.data.remote.API
 
 import com.dicoding.storyapp.data.lib.User.LoginResponse
 import com.dicoding.storyapp.data.lib.User.SignUpResponse
@@ -25,14 +25,31 @@ interface ApiService {
         @Field("password") password: String
     ): Call<LoginResponse>
 
+    @GET("stories?location=1")
+    fun getAllStoryLocation(
+        @Query("size") size: Int
+    ): Call<StoryResponse>
+
     @GET("stories")
-    fun getAllStories(
-    ) : Call <StoryResponse>
+    suspend fun getStoryList(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): StoryResponse
+
 
     @Multipart
     @POST("stories")
     fun postStory(
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
+    ): Call <StoryUpload>
+
+    @Multipart
+    @POST("stories")
+    fun postStoryWithLocation(
+        @Part file: MultipartBody.Part,
+        @Part("description") description: RequestBody,
+        @Part("lat") lat: RequestBody?,
+        @Part("lon") lon: RequestBody?
     ): Call <StoryUpload>
 }

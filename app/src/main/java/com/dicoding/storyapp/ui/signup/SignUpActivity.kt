@@ -69,12 +69,14 @@ class SignUpActivity : AppCompatActivity() {
             val name = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+            if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty() && password.length>=8) {
                 setupViewModel(name, email, password)
             } else if (name.isEmpty()) binding.nameEditTextLayout.error =
                 resources.getString(R.string.column_isEmpty_message)
             else if (email.isEmpty()) binding.emailEditTextLayout.error =
                 resources.getString(R.string.column_isEmpty_message)
+            else if (password.length<8) binding.passwordEditTextLayout.error =
+                resources.getString(R.string.password_minimum)
             else binding.passwordEditTextLayout.error =
                 resources.getString(R.string.column_isEmpty_message)
         }
